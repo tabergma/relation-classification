@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/ >
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Tagging</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="static/main.css"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script>
+        function enableInfoButtons(id) {
+            document.getElementById("info-buttons-" + id).disabled = false;
+        }
+        function disableInfoButtons(id) {
+            document.getElementById("info-buttons-" + id).disabled = true;
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-9">
+            <div class="clearfix"></div>
+
+            {% if done %}
+                <h2>Relation Extraction</h2>
+                <br>
+                You canceled the session. You have tagged {{ index - 1 }} sentences.
+                You can start the next session at sentence {{ index }}.
+                <br><br>
+                Thank you!
+                <form action="/" method="get">
+                    <div class="pull-right">
+                        <input class="btn btn-default btn-lg" type="submit" value="Home"/>
+                    </div>
+                </form>
+
+            {% elif index < relation_length %}
+                <label> Sentence {{ index + 1 }}/{{ relation_length }} </label>
+                <div class="sentence">
+                    {{ relations[index]['sentence'] }}
+                </div>
+
+                <form id="from" action="/{{ index + 1 }}" method="post">
+                    <input type="hidden" name="index" value={{ index }}>
+
+                    {% for item in relations[index]['relations'] %}
+                    <div class="relations">
+                        <div style="font-size:18px">
+                            <table>
+                              <tr>
+                                <td>{{ item['arg1'] }}</td>
+                                <td>-</td>
+                                <td>{{ item['rel'] }}</td>
+                                <td>-</td>
+                                <td style="padding-right: 20px;">{{ item['arg2'] }}</td>
+                                <td style="border-left: 1px solid black; padding-left: 20px;">context: {{ item['context'] }}</td>
+                              </tr>
+                            </table>
+                        </div>
+
+                        <div class="btn-group" data-toggle="buttons">
+
+                        {% if current_result != None and current_result[relations[index]['relations'].index(item)]['correct'] == 'True' %}
+                            <label class="btn btn-success active" onclick="disableInfoButtons({{ item['id'] }})">
+                                <input type="radio" name="relation-{{ item['id'] }}" value="1" id="yes" autocomplete="off" checked required> Yes
+                            </label>
+                        {% else %}
+                            <label class="btn btn-success" onclick="disableInfoButtons({{ item['id'] }})">
+                                <input type="radio" name="relation-{{ item['id'] }}" value="1" id="yes" autocomplete="off" required> Yes
+                            </label>
+                        {% endif%}
+
+                        {% if current_result != None and current_result[relations[index]['relations'].index(item)]['correct'] == 'False' %}
+                            <label class="btn btn-danger active" onclick="enableInfoButtons({{ item['id'] }})">
+                                <input type="radio" name="relation-{{ item['id'] }}" value="0" id="no" autocomplete="off" checked> No
+                            </label>
+                        {% else %}
+                            <label class="btn btn-danger" onclick="enableInfoButtons({{ item['id'] }})">
+                                <input type="radio" name="relation-{{ item['id'] }}" value="0" id="no" autocomplete="off"> No
+                        {% endif%}
+
+                        </div>
+
+                        {% if current_result != None and current_result[relations[index]['relations'].index(item)]['correct'] == 'False' %}
+                            <fieldset id="info-buttons-{{ item['id'] }}">
+                        {% else %}
+                            <fieldset id="info-buttons-{{ item['id'] }}" disabled>
+                        {% endif%}
+
+                            <div class="btn-group" data-toggle="buttons" style="margin-left: 50px;">
+
+                                {% if current_result != None and current_result[relations[index]['relations'].index(item)]['informative'] == 'False' %}
+                                    <label class="btn btn-info active">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="uninformative" autocomplete="off" value="uninformative" checked> uninformative
+                                    </label>
+                                {% else %}
+                                    <label class="btn btn-info">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="uninformative" autocomplete="off" value="uninformative"> uninformative
+                                    </label>
+                                {% endif %}
+
+                                {% if current_result != None and current_result[relations[index]['relations'].index(item)]['coherent'] == 'False' %}
+                                    <label class="btn btn-info active">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent" checked> incoherent
+                                    </label>
+                                {% else %}
+                                    <label class="btn btn-info">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent"> incoherent
+                                    </label>
+                                {% endif %}
+
+                                {% if current_result != None and current_result[relations[index]['relations'].index(item)]['factual'] == 'False' %}
+                                    <label class="btn btn-info active">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual" checked> nonfactual
+                                    </label>
+                                {% else %}
+                                    <label class="btn btn-info">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual"> nonfactual
+                                    </label>
+                                {% endif %}
+
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+                    {% endfor %}
+
+
+                    <div class="pull-right" id="form-buttons">
+                        <button id="cancel" class="btn btn-default btn-lg" type="submit" name="submit" value="cancel" formnovalidate>Cancel</button>
+                        <button id="next" class="btn btn-primary btn-lg" type="submit" name="submit" value="next" autofocus >Next</button>
+                    </div>
+                </form>
+
+            {% else %}
+                <h2>Relation Extraction</h2>
+                <br>
+                You classified all relations as correct or incorrect. Thank you!
+            {% endif %}
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="col-md-1"></div>
+    </div>
+</div>
+</body>
+</html>

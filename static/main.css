@@ -1,0 +1,94 @@
+.pull-right {
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+#form-buttons {
+    margin-top: 40px;
+}
+
+.clearfix {
+    height: 50px;
+}
+
+.sentence {
+    font-size: 20px;
+    padding: 20px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    color: black;
+    border-radius: 20px;
+    border: 2px solid #245580
+}
+
+td {
+    padding: 10px;
+}
+
+.checkbox {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.relations {
+    margin-left: 50px;
+    padding-top: 20px;
+    border-bottom: 1px solid black;
+}
+
+.btn-group {
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.btn-danger {
+    background-color: white;
+    border-color: grey;
+    color: black;
+    background-image: none;
+    font-size: 18px;
+}
+
+.btn-success {
+    background-color: white;
+    border-color: grey;
+    color: black;
+    background-image: none;
+    font-size: 18px;
+}
+
+.btn-info {
+    background-color: white;
+    border-color: grey;
+    color: grey;
+    background-image: none;
+    font-size: 18px;
+}
+
+fieldset {
+    float: right;
+    color: balck;
+}
+
+fieldset[disabled] .btn-info {
+    background-color: white;
+    color: grey;
+}
+
+fieldset[disabled] .btn-info.active {
+    background-color: white;
+    color: grey;
+    border-color: grey;
+}
+
+fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:hover {
+    background-color: white;
+    border-color: grey;
+}
+
+div.centered {
+    height: 2em;
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+}

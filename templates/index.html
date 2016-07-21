@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/ >
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Tagging</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="static/main.css"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-9">
+            <div class="clearfix"></div>
+            <h1>Relation Extraction</h1>
+            <br/><br/>
+            Welcome! In the following you are ask to classify relations as correct or incorrect, in order to evaluate the system I developed in my master thesis. Before you start, please read the following definition carefully.
+            <br/><br/>
+            <h4>Definition of the term 'relation'</h4>
+            A relation extraction is defined as tuple <i>t = (e<sub>i</sub>, r<sub>j</sub>, e<sub>k</sub>)</i>, where <i>e<sub>i</sub></i> and <i>e<sub>k</sub></i> are entities and <i>r<sub>j</sub></i> is the relation between them.
+            <i>e<sub>i</sub></i> and <i>e<sub>j</sub></i> should be noun phrases, whereas <i>r<sub>j</sub></i> should be some verb phrase.
+            A relation can occur between any nouns.
+            <br/>
+            A relations should also be
+            <ul>
+                <li> <b>Informative</b>: An informative relation does not omit critical information.
+                <li> <b>Coherent</b>: The extracted relation phrase (<i>r<sub>j</sub></i>) should have a meaningful interpretation.
+                <li> <b>Factual</b>: A relation should express a fact and if needed also the circumstances under which this fact holds.
+            </ul>
+            <br/>
+
+            <h5><b>Examples</b></h5>
+
+            <u>Sentence 1</u>
+            <div class="centered">
+                <i>Microsoft kaufte LinkedIn für mehr als 26 Millionen US-Dollar im Juni 2016.</i>
+            </div>
+            Possible relation extraction:
+            <div class="centered">
+                <i>(Microsoft, kaufte LinkedIn für mehr als 26 Millionen US-Doller im, Juni 2016)</i>
+            </div>
+            The relation is not correct. The relation phrase is too specific and has no meaningful interpretation (incoherent).
+            <br/><br/>
+
+            <u>Sentence 2</u>
+            <div class="centered">
+                <i>Microsoft macht einen Deal mit LinkedIn.</i>
+            </div>
+            Possible relation extraction:
+            <div class="centered">
+                <i>(Microsoft, macht, einen Deal)</i>
+            </div>
+            The relation is uninformative. The fact with whom the deal was made is missing. The correct relation would be:
+            <div class="centered">
+                <i>(Microsoft, macht einen Deal mit, LinkedIn)</i>
+            </div>
+            <br/>
+
+            <u>Sentence 3</u>
+            <div class="centered">
+                <i>John Doe behauptet, dass Microsoft LinkedIn gekauft hat.</i>
+            </div>
+            Possible relation extraction:
+            <div class="centered">
+                <i>(Microsoft, hat gekauft, LinkedIn)</i>
+            </div>
+            The relation itself is correct, but it is not factual.
+            The relation is only true with the additional information, that someone is claiming this purchase.
+
+            <br/><br/><br/>
+            <h4>Your Task</h4>
+            In the following you see one sentence at a time.
+            The relations, which are extracted from this sentence, are also shown.
+            You <b>must</b> mark each relation as correct (YES) or incorrect (NO).
+            If the relation is incorrect, you <b>can</b> also specify why: Is the relation informative, incoherent or/and non-factual?
+            If nothing of those reasons is selected, we imply that the relation itself is simply wrong.
+            <br><br>
+            You can stop the classification at any time.
+            You are told at which sentence you should start your next session.
+            Therefore, you just enter the number of that sentence in the field below.
+            <br><br>
+            Thank you!
+            <br><br><br><br>
+            <form action="/0" method="post">
+                Start at sentence:
+                <input type="number" name="sentence_id" min="1" max={{relation_length}} value="1"><br><br>
+                <div class="pull-right">
+                    <input class="btn btn-primary btn-lg" type="submit" value="Start" id="start" />
+                </div>
+            </form>
+            <div class="clearfix"></div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+</body>
+</html>
