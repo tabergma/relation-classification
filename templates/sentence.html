@@ -142,6 +142,46 @@
                     </div>
                 </form>
 
+                <hr style="margin-top:150px">
+
+                <h5><b>Definitions:</b></h5>
+
+                <u>Incoherent Relation</u><br/>
+                The extracted relation phrase is over-specified and has no meaningful interpretation.<br/>
+                Example:
+                <div class="centered">
+                    <i>(Microsoft, kaufte LinkedIn für mehr als 26 Millionen US-Doller im, Juni 2016)</i>
+                </div>
+                in
+                <div class="centered">
+                    <i>Microsoft kaufte LinkedIn für mehr als 26 Millionen US-Dollar im Juni 2016.</i>
+                </div>
+                <br/><br/>
+
+                <u>Uninformative Relation</u><br/>
+                The extracted relation phrase omits critical information.<br/>
+                Example:
+                <div class="centered">
+                    <i>(Microsoft, macht, einen Deal)</i>
+                </div>
+                in
+                <div class="centered">
+                    <i>Microsoft macht einen Deal mit LinkedIn.</i>
+                </div>
+
+                <br/>
+
+                <u>Nonfactual Realtion</u><br/>
+                The relation does not express a fact.<br/>
+                Example:
+                <div class="centered">
+                    <i>(Microsoft, hat gekauft, LinkedIn)</i>
+                </div>
+                in
+                <div class="centered">
+                    <i>John Doe behauptet, dass Microsoft LinkedIn gekauft hat.</i>
+                </div>
+
             {% else %}
                 <h2>Relation Extraction</h2>
                 <br>

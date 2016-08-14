@@ -11,17 +11,27 @@ def index():
 def start(sentence_id):
     done = False
 
+    current_result = None
+    if sentence_id < len(results):
+        current_result = results[sentence_id]['relations']
+
+    print(current_result)
+
     if request.method == 'POST':
         form = request.form
 
         # we are starting at a different sentence
         if 'sentence_id' in form:
             sentence_id = int(form['sentence_id']) - 1
+            current_result = None
+            if sentence_id < len(results):
+                current_result = results[sentence_id]['relations']
 
         else:
             index = int(form['index'])
             # tagging is canceled
             if form['submit'] == 'cancel':
+                reset_last_result(form)
                 write_relations()
                 done = True
 
@@ -35,16 +45,16 @@ def start(sentence_id):
                 update_relations(form)
                 write_relations()
 
-        current_result = None
-        if sentence_id < len(results):
-            current_result = results[sentence_id]['relations']
-
     return render_template('sentence.html', done = done, relations = relations, current_result = current_result, index = sentence_id, relation_length = len(relations), results_length = len(results))
 
 
 def write_relations():
     with open(json_results_file, 'w') as outfile:
         json.dump(results, outfile)
+
+
+def reset_last_result(form):
+    print(results)
 
 
 def update_relations(form):
@@ -113,10 +123,10 @@ def find_result_object(index):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='run the web demo', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-p", "--person", action="store", required=True, dest="person", help="Are you 'stefan' or 'michael'?")
+    parser.add_argument("-p", "--person", action="store", required=True, dest="person", help="Are you 'stefan', 'dominik', 'rice', 'joseph', 'michael' or 'tanja'?")
     args = parser.parse_args()
 
-    if args.person not in ['stefan', 'michael']:
+    if args.person not in ['stefan', 'michael', 'joseph', 'rice', 'dominik', 'tanja']:
         args.print_help()
         sys.exit()
     else:
