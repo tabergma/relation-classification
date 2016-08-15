@@ -100,31 +100,31 @@
 
                                 {% if current_result != None and current_result[relations[index]['relations'].index(item)]['informative'] == 'False' %}
                                     <label class="btn btn-info active">
-                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="uninformative" autocomplete="off" value="uninformative" checked> uninformative
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="uninformative" autocomplete="off" value="uninformative" checked> not informative
                                     </label>
                                 {% else %}
                                     <label class="btn btn-info">
-                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="uninformative" autocomplete="off" value="uninformative"> uninformative
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="uninformative" autocomplete="off" value="uninformative"> not informative
                                     </label>
                                 {% endif %}
 
                                 {% if current_result != None and current_result[relations[index]['relations'].index(item)]['coherent'] == 'False' %}
                                     <label class="btn btn-info active">
-                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent" checked> incoherent
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent" checked> over-specified
                                     </label>
                                 {% else %}
                                     <label class="btn btn-info">
-                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent"> incoherent
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent"> over-specified
                                     </label>
                                 {% endif %}
 
                                 {% if current_result != None and current_result[relations[index]['relations'].index(item)]['factual'] == 'False' %}
                                     <label class="btn btn-info active">
-                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual" checked> nonfactual
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual" checked> not a fact
                                     </label>
                                 {% else %}
                                     <label class="btn btn-info">
-                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual"> nonfactual
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual"> not a fact
                                     </label>
                                 {% endif %}
 
@@ -146,7 +146,7 @@
 
                 <h5><b>Definitions:</b></h5>
 
-                <u>Incoherent Relation</u><br/>
+                <u>Incoherent Relation</u> (over-specified)<br/>
                 The extracted relation phrase is over-specified and has no meaningful interpretation.<br/>
                 Example:
                 <div class="centered">
@@ -158,7 +158,7 @@
                 </div>
                 <br/><br/>
 
-                <u>Uninformative Relation</u><br/>
+                <u>Uninformative Relation</u> (not informative)<br/>
                 The extracted relation phrase omits critical information.<br/>
                 Example:
                 <div class="centered">
@@ -171,7 +171,7 @@
 
                 <br/>
 
-                <u>Nonfactual Realtion</u><br/>
+                <u>Nonfactual Realtion</u> (not a fact)<br/>
                 The relation does not express a fact.<br/>
                 Example:
                 <div class="centered">
