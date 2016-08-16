@@ -11,21 +11,12 @@ def index():
 def start(sentence_id):
     done = False
 
-    current_result = None
-    if sentence_id < len(results):
-        current_result = results[sentence_id]['relations']
-
-    print(current_result)
-
     if request.method == 'POST':
         form = request.form
 
         # we are starting at a different sentence
         if 'sentence_id' in form:
             sentence_id = int(form['sentence_id']) - 1
-            current_result = None
-            if sentence_id < len(results):
-                current_result = results[sentence_id]['relations']
 
         else:
             index = int(form['index'])
@@ -44,6 +35,10 @@ def start(sentence_id):
             elif form['submit'] == 'next':
                 update_relations(form)
                 write_relations()
+
+    current_result = None
+    if sentence_id < len(results):
+        current_result = results[sentence_id]['relations']
 
     return render_template('sentence.html', done = done, relations = relations, current_result = current_result, index = sentence_id, relation_length = len(relations), results_length = len(results))
 
@@ -66,33 +61,35 @@ def update_relations(form):
         informative = "none"
         coherent = "none"
         factual = "none"
+        not_sure = "none"
 
-        # relation correct?
         rel_id = rel['id']
-        form_key = 'relation-' + str(rel_id)
-        if form[form_key] == "1":
-            correct = 'True'
-        else:
-            correct = 'False'
 
-        # relation informative, coherent, factual?
-        if correct == 'False':
-            form_key = 'relation-' + str(rel_id) + '-info'
-            if form_key in form:
-                l = form.getlist(form_key)
-                if "uninformative" in l:
-                    informative = 'False'
-                if "incoherent" in l:
-                    coherent = 'False'
-                if "nonfactual" in l:
-                    factual = 'False'
+        # relation informative, coherent, factual, ok?
+        form_key = 'relation-' + str(rel_id) + '-info'
+        if form_key in form:
+            l = form.getlist(form_key)
+            if "uninformative" in l:
+                informative = 'False'
+                correct = 'False'
+            if "incoherent" in l:
+                coherent = 'False'
+                correct = 'False'
+            if "nonfactual" in l:
+                factual = 'False'
+                correct = 'False'
+            if "correct" in l:
+                correct = 'True'
+            if "not-sure" in l:
+                not_sure = 'True'
 
         result.append({
             "id": rel_id,
             "correct": correct,
             "informative": informative,
             "coherent": coherent,
-            "factual": factual
+            "factual": factual,
+            "not-sure": not_sure
         })
 
     # add the results

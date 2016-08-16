@@ -31,9 +31,7 @@ td {
 }
 
 .relations {
-    margin-left: 50px;
-    padding-top: 20px;
-    border-bottom: 1px solid black;
+    margin-top: 50px;
 }
 
 .btn-group {
@@ -60,30 +58,9 @@ td {
 .btn-info {
     background-color: white;
     border-color: grey;
-    color: grey;
+    color: black;
     background-image: none;
     font-size: 18px;
-}
-
-fieldset {
-    float: right;
-    color: balck;
-}
-
-fieldset[disabled] .btn-info {
-    background-color: white;
-    color: grey;
-}
-
-fieldset[disabled] .btn-info.active {
-    background-color: white;
-    color: grey;
-    border-color: grey;
-}
-
-fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info:hover {
-    background-color: white;
-    border-color: grey;
 }
 
 div.centered {
@@ -91,4 +68,11 @@ div.centered {
     display: flex;
     align-items: center;
     margin-left: 30px;
+}
+
+p.card-text {
+    border: 0.5px solid #d8d8d8;
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px;
 }

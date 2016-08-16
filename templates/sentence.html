@@ -15,12 +15,64 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <script>
-        function enableInfoButtons(id) {
-            document.getElementById("info-buttons-" + id).disabled = false;
+        function correctClicked(id) {
+            var btn1 = document.getElementById("btn-incorrect-" + id);
+            reset(btn1);
+            var btn2 = document.getElementById("btn-not-sure-" + id);
+            reset(btn2);
         }
-        function disableInfoButtons(id) {
-            document.getElementById("info-buttons-" + id).disabled = true;
+        function incorrectClicked(id) {
+            var btn1 = document.getElementById("btn-correct-" + id);
+            reset(btn1);
+            var btn2 = document.getElementById("btn-not-sure-" + id);
+            reset(btn2);
         }
+        function notsureClicked(id) {
+            var btn1 = document.getElementById("btn-incorrect-" + id);
+            reset(btn1);
+            var btn2 = document.getElementById("btn-correct-" + id);
+            reset(btn2);
+        }
+        function reset(btn) {
+            var all = btn.getElementsByTagName('*');
+            var i;
+            for (i = 0; i < all.length; i++) {
+                var el = all[i]
+                if (el.nodeName == 'INPUT') {
+                    el.checked = false;
+                }
+                if (el.nodeName == 'LABEL') {
+                    el.classList.remove('active');
+                }
+            }
+        }
+        function validateForm() {
+            var f = document.forms["form"];
+
+            var i = 1;
+            while (typeof f['relation-' + i + '-info'] != 'undefined' && f['relation-' + i + '-info'] != null) {
+                var values = f['relation-' + i + '-info']
+
+                console.log(values)
+
+                var checked = false;
+                var j = 0;
+                for (j = 0; j < values.length; j++) {
+                    if (values[j].checked) {
+                        checked = true;
+                    }
+                }
+
+                if (!checked) {
+                    alert("You must classify all relations!");
+                    return false;
+                }
+                i = i + 1;
+            }
+
+            return true;
+        }
+
     </script>
 </head>
 <body>
@@ -49,90 +101,92 @@
                     {{ relations[index]['sentence'] }}
                 </div>
 
-                <form id="from" action="/{{ index + 1 }}" method="post">
+                <form id="form" name="form" action="/{{ index + 1 }}" method="post" onsubmit="return validateForm()">
                     <input type="hidden" name="index" value={{ index }}>
 
                     {% for item in relations[index]['relations'] %}
                     <div class="relations">
-                        <div style="font-size:18px">
-                            <table>
-                              <tr>
-                                <td>{{ item['arg1'] }}</td>
-                                <td>-</td>
-                                <td>{{ item['rel'] }}</td>
-                                <td>-</td>
-                                <td style="padding-right: 20px;">{{ item['arg2'] }}</td>
-                                <td style="border-left: 1px solid black; padding-left: 20px;">context: {{ item['context'] }}</td>
-                              </tr>
-                            </table>
-                        </div>
-
-                        <div class="btn-group" data-toggle="buttons">
-
-                        {% if current_result != None and current_result[relations[index]['relations'].index(item)]['correct'] == 'True' %}
-                            <label class="btn btn-success active" onclick="disableInfoButtons({{ item['id'] }})">
-                                <input type="radio" name="relation-{{ item['id'] }}" value="1" id="yes" autocomplete="off" checked required> Yes
-                            </label>
-                        {% else %}
-                            <label class="btn btn-success" onclick="disableInfoButtons({{ item['id'] }})">
-                                <input type="radio" name="relation-{{ item['id'] }}" value="1" id="yes" autocomplete="off" required> Yes
-                            </label>
-                        {% endif%}
-
-                        {% if current_result != None and current_result[relations[index]['relations'].index(item)]['correct'] == 'False' %}
-                            <label class="btn btn-danger active" onclick="enableInfoButtons({{ item['id'] }})">
-                                <input type="radio" name="relation-{{ item['id'] }}" value="0" id="no" autocomplete="off" checked> No
-                            </label>
-                        {% else %}
-                            <label class="btn btn-danger" onclick="enableInfoButtons({{ item['id'] }})">
-                                <input type="radio" name="relation-{{ item['id'] }}" value="0" id="no" autocomplete="off"> No
-                        {% endif%}
+                        <div style="font-size:18px" class="row">
+                            <div class="col-sm-4">
+                                <p class="card-text">{{ item['arg1'] }}</p>
+                            </div>
+                            <div class="col-sm-3">
+                                <p class="card-text">{{ item['rel'] }}</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <p class="card-text">{{ item['arg2'] }}</p>
+                            </div>
 
                         </div>
+                            {% if item['context'] != 'main clause' %}
+                            <div style="font-size:16px; margin-left: 10px; margin-bottom: 20px;" class="row">
+                                Context: {{ item['context'] }}
+                            </div>
+                            {% endif %}
 
-                        {% if current_result != None and current_result[relations[index]['relations'].index(item)]['correct'] == 'False' %}
-                            <fieldset id="info-buttons-{{ item['id'] }}">
-                        {% else %}
-                            <fieldset id="info-buttons-{{ item['id'] }}" disabled>
-                        {% endif%}
+                        <fieldset>
 
-                            <div class="btn-group" data-toggle="buttons" style="margin-left: 50px;">
-
+                            <div class="btn-group" id="btn-incorrect-{{ item['id'] }}" data-toggle="buttons">
                                 {% if current_result != None and current_result[relations[index]['relations'].index(item)]['informative'] == 'False' %}
-                                    <label class="btn btn-info active">
+                                    <label class="btn btn-danger active" onclick="incorrectClicked({{ item['id'] }})">
                                         <input type="checkbox" name="relation-{{ item['id'] }}-info" id="uninformative" autocomplete="off" value="uninformative" checked> not informative
                                     </label>
                                 {% else %}
-                                    <label class="btn btn-info">
+                                    <label class="btn btn-danger" onclick="incorrectClicked({{ item['id'] }})">
                                         <input type="checkbox" name="relation-{{ item['id'] }}-info" id="uninformative" autocomplete="off" value="uninformative"> not informative
                                     </label>
                                 {% endif %}
 
                                 {% if current_result != None and current_result[relations[index]['relations'].index(item)]['coherent'] == 'False' %}
-                                    <label class="btn btn-info active">
-                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent" checked> over-specified
+                                    <label class="btn btn-danger active" onclick="incorrectClicked({{ item['id'] }})">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent" checked> too specific
                                     </label>
                                 {% else %}
-                                    <label class="btn btn-info">
-                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent"> over-specified
+                                    <label class="btn btn-danger" onclick="incorrectClicked({{ item['id'] }})">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="incoherent" autocomplete="off" value="incoherent"> too specific
                                     </label>
                                 {% endif %}
 
                                 {% if current_result != None and current_result[relations[index]['relations'].index(item)]['factual'] == 'False' %}
-                                    <label class="btn btn-info active">
+                                    <label class="btn btn-danger active" onclick="incorrectClicked({{ item['id'] }})">
                                         <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual" checked> not a fact
                                     </label>
                                 {% else %}
-                                    <label class="btn btn-info">
+                                    <label class="btn btn-danger" onclick="incorrectClicked({{ item['id'] }})">
                                         <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual"> not a fact
+                                    </label>
+                                {% endif %}
+                            </div>
+
+                            <div class="btn-group" id="btn-correct-{{ item['id'] }}" data-toggle="buttons">
+                                {% if current_result != None and current_result[relations[index]['relations'].index(item)]['correct'] == 'True' %}
+                                    <label class="btn btn-success active" onclick="correctClicked({{ item['id'] }})">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="correct" autocomplete="off" value="correct" checked> ok
+                                    </label>
+                                {% else %}
+                                    <label class="btn btn-success" onclick="correctClicked({{ item['id'] }})">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="correct" autocomplete="off" value="correct"> ok
                                     </label>
                                 {% endif %}
 
                             </div>
 
+                            <div class="btn-group" id="btn-not-sure-{{ item['id'] }}" data-toggle="buttons">
+                                {% if current_result != None and current_result[relations[index]['relations'].index(item)]['not-sure'] == 'False' %}
+                                    <label class="btn btn-info active" onclick="notsureClicked({{ item['id'] }})">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="not-sure" autocomplete="off" value="not-sure" checked> not sure
+                                    </label>
+                                {% else %}
+                                    <label class="btn btn-info" onclick="notsureClicked({{ item['id'] }})">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="not-sure" autocomplete="off" value="not-sure"> not sure
+                                    </label>
+                                {% endif %}
+
+                            </div>
                         </fieldset>
 
                     </div>
+                    <hr style="border-color: grey">
                     {% endfor %}
 
 
@@ -146,41 +200,49 @@
 
                 <h5><b>Definitions:</b></h5>
 
-                <u>Incoherent Relation</u> (over-specified)<br/>
-                The extracted relation phrase is over-specified and has no meaningful interpretation.<br/>
+                <b>Not informative</b><br>
+                A not informative relation misses some critical information of the sentence.
+                Attention: A relation can only omit critical information, if the sentence contains additional information. A relation, such as <i>(Die Berge, werden gespiegelt im, See)</i>, has a low information value. However, it is still informative, because it contains all critical information from the sentence "Die Berge werden im See gespiegelt.".<br>
                 Example:
-                <div class="centered">
-                    <i>(Microsoft, kaufte LinkedIn für mehr als 26 Millionen US-Doller im, Juni 2016)</i>
-                </div>
-                in
-                <div class="centered">
-                    <i>Microsoft kaufte LinkedIn für mehr als 26 Millionen US-Dollar im Juni 2016.</i>
-                </div>
-                <br/><br/>
-
-                <u>Uninformative Relation</u> (not informative)<br/>
-                The extracted relation phrase omits critical information.<br/>
-                Example:
-                <div class="centered">
-                    <i>(Microsoft, macht, einen Deal)</i>
-                </div>
-                in
                 <div class="centered">
                     <i>Microsoft macht einen Deal mit LinkedIn.</i>
                 </div>
-
+                Possible relation extraction:
+                <div class="centered">
+                    <i>(Microsoft, macht, einen Deal)</i>
+                </div>
+                The relation is not informative. The fact with whom the deal was made is missing. The informative relation would be:
+                <div class="centered">
+                    <i>(Microsoft, macht einen Deal mit, LinkedIn)</i>
+                </div>
                 <br/>
 
-                <u>Nonfactual Realtion</u> (not a fact)<br/>
-                The relation does not express a fact.<br/>
+                <h5><b>Too Specific</b></h5>
+                A relation is too specific, if the relation phrase cannot occur with other entities. <br>
                 Example:
                 <div class="centered">
-                    <i>(Microsoft, hat gekauft, LinkedIn)</i>
+                    <i>Microsoft kaufte LinkedIn für mehr als 26 Millionen US-Dollar im Juni 2016.</i>
                 </div>
-                in
+                Possible relation extraction:
+                <div class="centered">
+                    <i>(Microsoft, kaufte LinkedIn für mehr als 26 Millionen US-Doller im, Juni 2016)</i>
+                </div>
+                The relation is too specific. There are no other entities, which can serve as arguments for this relation phrase.
+                <br/><br/>
+
+                <h5><b>Not A Fact</b></h5>
+                Each relation should express a fact of the sentence.
+                If a fact is modified by another phrase in the sentence, the relation must contain this modifier. <br>
+                Example:
                 <div class="centered">
                     <i>John Doe behauptet, dass Microsoft LinkedIn gekauft hat.</i>
                 </div>
+                Possible relation extraction:
+                <div class="centered">
+                    <i>(Microsoft, hat gekauft, LinkedIn)</i>
+                </div>
+                The relation itself is correct, but it expresses not a fact.
+                The relation is only true with the additional information, that someone is claiming this purchase.
 
             {% else %}
                 <h2>Relation Extraction</h2>
