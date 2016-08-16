@@ -123,10 +123,10 @@ def find_result_object(index):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='run the web demo', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-p", "--person", action="store", required=True, dest="person", help="Are you 'stefan', 'dominik', 'rice', 'joseph', 'michael' or 'tanja'?")
+    parser.add_argument("-p", "--person", action="store", required=True, dest="person", help="Are you 'stefan', 'dominik', 'rice', 'joseph', 'tim', 'michael', 'toni', 'anja', 'max', 'thorsten', 'sebastian' or 'tanja'?")
     args = parser.parse_args()
 
-    if args.person not in ['stefan', 'michael', 'joseph', 'rice', 'dominik', 'tanja']:
+    if args.person not in ['stefan', 'michael', 'joseph', 'rice', 'dominik', 'tanja', 'tim', 'toni', 'thorsten', 'anja', 'max', 'sebastian']:
         args.print_help()
         sys.exit()
     else:
