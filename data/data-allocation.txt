@@ -9,9 +9,7 @@ relations.3.json
 	tim
 relations.4.json
 	anja
-	toni
 	max
 relations.5.json
 	thorsten
 	sebastian
-
