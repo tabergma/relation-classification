@@ -22,7 +22,6 @@ def start(sentence_id):
             index = int(form['index'])
             # tagging is canceled
             if form['submit'] == 'cancel':
-                reset_last_result(form)
                 write_relations()
                 done = True
 
@@ -48,10 +47,6 @@ def write_relations():
         json.dump(results, outfile)
 
 
-def reset_last_result(form):
-    print(results)
-
-
 def update_relations(form):
     index = int(form['index'])
 
@@ -62,6 +57,7 @@ def update_relations(form):
         coherent = "none"
         factual = "none"
         not_sure = "none"
+        other = "none"
 
         rel_id = rel['id']
 
@@ -82,6 +78,8 @@ def update_relations(form):
                 correct = 'True'
             if "not-sure" in l:
                 not_sure = 'True'
+            if "other" in l:
+                other = 'True'
 
         result.append({
             "id": rel_id,
@@ -89,7 +87,8 @@ def update_relations(form):
             "informative": informative,
             "coherent": coherent,
             "factual": factual,
-            "not-sure": not_sure
+            "not-sure": not_sure,
+            "other": other
         })
 
     # add the results

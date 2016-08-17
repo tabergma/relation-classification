@@ -46,14 +46,15 @@
                 }
             }
         }
-        function validateForm() {
-            var f = document.forms["form"];
+        function validateForm(value) {
+            if (value == "cancel") {
+                return true;
+            }
 
+            var f = document.forms["form"];
             var i = 1;
             while (typeof f['relation-' + i + '-info'] != 'undefined' && f['relation-' + i + '-info'] != null) {
                 var values = f['relation-' + i + '-info']
-
-                console.log(values)
 
                 var checked = false;
                 var j = 0;
@@ -101,7 +102,7 @@
                     {{ relations[index]['sentence'] }}
                 </div>
 
-                <form id="form" name="form" action="/{{ index + 1 }}" method="post" onsubmit="return validateForm()">
+                <form id="form" name="form" action="/{{ index + 1 }}" method="post" onsubmit="return validateForm(this.submited)">
                     <input type="hidden" name="index" value={{ index }}>
 
                     {% for item in relations[index]['relations'] %}
@@ -110,7 +111,7 @@
                             <div class="col-sm-4">
                                 <p class="card-text">{{ item['arg1'] }}</p>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <p class="card-text">{{ item['rel'] }}</p>
                             </div>
                             <div class="col-sm-4">
@@ -156,6 +157,16 @@
                                         <input type="checkbox" name="relation-{{ item['id'] }}-info" id="nonfactual" autocomplete="off" value="nonfactual"> not a fact
                                     </label>
                                 {% endif %}
+
+                                {% if current_result != None and current_result[relations[index]['relations'].index(item)]['other'] == 'False' %}
+                                    <label class="btn btn-danger active" onclick="incorrectClicked({{ item['id'] }})">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="other" autocomplete="off" value="other" checked> other errors
+                                    </label>
+                                {% else %}
+                                    <label class="btn btn-danger" onclick="incorrectClicked({{ item['id'] }})">
+                                        <input type="checkbox" name="relation-{{ item['id'] }}-info" id="other" autocomplete="off" value="other"> other errors
+                                    </label>
+                                {% endif %}
                             </div>
 
                             <div class="btn-group" id="btn-correct-{{ item['id'] }}" data-toggle="buttons">
@@ -191,8 +202,8 @@
 
 
                     <div class="pull-right" id="form-buttons">
-                        <button id="cancel" class="btn btn-default btn-lg" type="submit" name="submit" value="cancel" formnovalidate>Cancel</button>
-                        <button id="next" class="btn btn-primary btn-lg" type="submit" name="submit" value="next" autofocus >Next</button>
+                        <button id="cancel" class="btn btn-default btn-lg" type="submit" name="submit" value="cancel" onclick="this.form.submited=this.value;">Cancel</button>
+                        <button id="next" class="btn btn-primary btn-lg" type="submit" name="submit" value="next" onclick="this.form.submited=this.value;">Next</button>
                     </div>
                 </form>
 

@@ -22,7 +22,7 @@
             <div class="clearfix"></div>
             <h1>Relation Extraction</h1>
             <br/><br/>
-            Welcome! In the following you are asked to classify relations as correct or incorrect in order to evaluate the system I developed in my master thesis. Before you start, please read the following definition carefully.
+            Welcome! In the following you are asked to classify relations in order to evaluate the system I developed in my master thesis. Before you start, please read the following definition carefully.
             <br/><br/>
             <h4>Definition of the term 'relation'</h4>
             A relation extraction is defined as tuple <i>t = (e<sub>i</sub>, r<sub>j</sub>, e<sub>k</sub>)</i>, where <i>e<sub>i</sub></i> and <i>e<sub>k</sub></i> are entities and <i>r<sub>j</sub></i> is the relation between them.
@@ -93,12 +93,14 @@
                 <li> <b>not informative</b>
                 <li> <b>too specific</b>
                 <li> <b>not a fact</b>
+                <li> <b>other erros</b>
                 <li> <b>ok</b> or
                 <li> <b>not sure</b>
             </ul>
             The first three categories were explained above.
+            <i>Other errors</i> means, that the relation is not correct for some other reasons. For example, if the sentence is not properly parsed or if one of the entities is not a noun, the relation is somehow not correct. In these cases, you can classify a relation as <i>other errors</i>.
             A relation is <i>ok</i>, if everything is fine.
-            Only label a relation as <i>not sure</i>, if you are really not sure how to label the relation.
+            Only classify a relation as <i>not sure</i>, if you are really not sure how to label the relation.
             Here are some examples:
             <ul>
                 <li> <b>Ok</b>: (WordPress, wurde konzipiert als, reines Blogsystem) in "WordPress wurde ursprünglich als reines Blogsystem konzipiert."
