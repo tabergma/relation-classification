@@ -74,12 +74,13 @@ def update_relations(form):
             if "nonfactual" in l:
                 factual = 'False'
                 correct = 'False'
+            if "other" in l:
+                other = 'True'
+                correct = 'False'
             if "correct" in l:
                 correct = 'True'
             if "not-sure" in l:
                 not_sure = 'True'
-            if "other" in l:
-                other = 'True'
 
         result.append({
             "id": rel_id,
