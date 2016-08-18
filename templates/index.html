@@ -27,8 +27,7 @@
             <h4>Definition of the term 'relation'</h4>
             A relation extraction is defined as tuple <i>t = (e<sub>i</sub>, r<sub>j</sub>, e<sub>k</sub>)</i>, where <i>e<sub>i</sub></i> and <i>e<sub>k</sub></i> are entities and <i>r<sub>j</sub></i> is the relation between them.
             <i>e<sub>i</sub></i> and <i>e<sub>j</sub></i> should be noun phrases, whereas <i>r<sub>j</sub></i> should be some verb phrase.
-            A relation can occur between any nouns.
-            The relation phrase (r<sub>j</sub>) can be any phrase based on a verb.
+            Because I developed an Open Information Extraction system, a relation can occur between any nouns and the relation phrase (r<sub>j</sub>) can be any phrase based on a verb.
             <br/>
             Consider for example the relation <i>(Microsoft, hat gekauft, LiknedIn)</i>.
             Here, "Microsoft" is the first entity <i>e<sub>i</sub></i>, "hat gekauft" is the relation phrase r<sub>j</sub>, and "LinkedIn" is the second entity e<sub>k</sub>. <br/><br/>
@@ -99,8 +98,9 @@
             </ul>
             The first three categories were explained above.
             <i>Other errors</i> means, that the relation is not correct for some other reasons. For example, if the sentence is not properly parsed or if one of the entities is not a noun, the relation is somehow not correct. In these cases, you can classify a relation as <i>other errors</i>.
+            The four categories <i>not informative</i>, <i>too specific</i>, <i>not a fact</i>, and <i>other errors</i> classify a relation as not correct. You can also classify a relation for example as <i>not informative</i> and <i>not a fact</i> at the same time. <br>
             A relation is <i>ok</i>, if everything is fine.
-            Only classify a relation as <i>not sure</i>, if you are really not sure how to label the relation.
+            If you are not sure how to label a relation, you can classify a relation as <i>not sure</i>. <br>
             Here are some examples:
             <ul>
                 <li> <b>Ok</b>: (WordPress, wurde konzipiert als, reines Blogsystem) in "WordPress wurde ursprünglich als reines Blogsystem konzipiert."
@@ -108,6 +108,9 @@
                 <li> <b>Ok</b>: (Eltern, haften für, ihre minderjährigen Kinder) in "Grundsätzlich gilt: Eltern haften für ihre minderjährigen Kinder."
                 <li> <b>Not informative</b>: (OrangeTravel, informiert, den Nutzer) in "OrangeTravel informiert den Nutzer über die Höhe des Entgeltes für den entsprechenden Lieferort in Textform oder per Telefon."
                 <li> <b>Too specific</b>: (Radschnellwege, schaffen für einen gemeinde- bzw. kreisübergreifenden Alltags- und Pendlerverkehr, attraktive Verbindungen) in "Radschnellwege schaffen attraktive Verbindungen für einen gemeinde- bzw. kreisübergreifenden Alltags- und Pendlerverkehr, sie entlasten Straßen und ÖPNV, ihnen kommt eine den Landesstraßen vergleichbare regionale Verkehrsbedeutung zu."
+                <li> <b>Other errors</b>: (Anfechtbar, ist, ein vom Schuldner mit einer nahestehenden Person geschlossener entgeltlicher Vertrag) in "Anfechtbar ist ein vom Schuldner mit einer nahestehenden Person (§ 138) geschlossener entgeltlicher Vertrag, durch den die Insolvenzgläubiger unmittelbar benachteiligt werden."
+                <li> <b>Other errors</b>: (die Parteien, sind sich einig, Hierüber) in "Hierüber sind sich die Parteien bereits jetzt einig."
+                <li> <b>Other errors</b>: (z.B., werden In, diesen Cookies) in "In diesen Cookies werden z.B. die nachfolgenden Informationen registriert:"
             </ul>
             <br>
             You can stop the classification at any time.
